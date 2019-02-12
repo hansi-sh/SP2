@@ -1,0 +1,10 @@
+﻿  Application.cpp
+c:\program files (x86)\windows kits\10\include\10.0.17134.0\shared\minwindef.h(130): warning C4005: 'APIENTRY': macro redefinition
+  c:\users\user\desktop\poly work\year 1\sem 2\computer graphic project\comg_a2\glfw\include\glfw\glfw3.h(98): note: see previous definition of 'APIENTRY'
+  AssignmentScene.cpp
+  Generating code
+  2 of 610 functions ( 0.3%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    1 functions had inline decision re-evaluated but remain unchanged
+  Finished generating code
+  DM2126Prac.vcxproj -> C:\Users\User\Desktop\Poly work\Year 1\Sem 2\Computer Graphic Project\ComG_A2\Release\DM2126Prac.exe
