@@ -53,7 +53,7 @@ void AssignmentScene::Init() //defines what shader to use
 	checkmodelStack = false;
 	running = true;
 	bodyMovement = true;
-	b_BMO = true;
+	b_BMO = false;
 	b_viewStats = false;
 	speed = 0;
 
@@ -62,7 +62,8 @@ void AssignmentScene::Init() //defines what shader to use
 	RightLegX = 90.0f;
 	ArmRotation = 0.0f;
 	TranslateBodyX = 0.0f;
-	TranslateBodyY = 15.0f;
+	//TranslateBodyY = 15.0f;
+	TranslateBodyY = 0.0f;
 	TranslateBodyZ = 0.0f;
 	RotateBody = 0.0f;
 
@@ -167,6 +168,9 @@ void AssignmentScene::Init() //defines what shader to use
 	meshList[GEO_BODY]->material.kDiffuse.Set(0.5f, 0.5f, 0.5f);
 	meshList[GEO_BODY]->material.kSpecular.Set(0.2f, 0.2f, 0.2f);
 	meshList[GEO_BODY]->material.kShininess = 1.0f;
+
+	meshList[GEO_BOX] = MeshBuilder::GenerateCube("Box", Color(1, 1, 1), 3.0f, 3.0f, 3.0f);
+	meshList[GEO_BOX2] = MeshBuilder::GenerateCube("Box", Color(1, 1, 1), 3.0f, 3.0f, 3.0f);
 
 	//<----Face---->
 	meshList[GEO_FACE] = MeshBuilder::GenerateCube("Face", Color(0.7109375f, 0.99609375f, 0.77734375f), 4.0f, 2.6f, 3.0f);
@@ -314,6 +318,9 @@ void AssignmentScene::Init() //defines what shader to use
 	meshList[GEO_TEXT] = MeshBuilder::GenerateText("text", 16, 16);
 	meshList[GEO_TEXT]->textureID = LoadTGA("Image//calibri.tga");
 
+	//Obj[OBJ_PLAYER] = new ObjectBox(Vector3(TranslateBodyX, TranslateBodyY, TranslateBodyZ), 3.0f, 3.0f, 3.0f);
+	Obj[OBJ_BOX] = new ObjectBox(Vector3(50.0f, 0.0f, 0.0f), 6.0f, 6.0f, 6.0f);
+	Obj[OBJ_BOX2] = new ObjectBox(Vector3(TranslateBodyX, TranslateBodyY, TranslateBodyZ), 6.0f, 6.0f, 6.0f);
 }
 
 void AssignmentScene::PlayMusic()
@@ -395,7 +402,7 @@ void AssignmentScene::Update(double dt)
 	if (Application::IsKeyPressed('0'))
 	{
 		TranslateBodyY = 0.0f;
-		TranslateBodyY = 15.0f;
+		//TranslateBodyY = 15.0f;
 		TranslateBodyZ = 0.0f;
 	}
 	if (Application::IsKeyPressed('T'))
@@ -442,11 +449,13 @@ void AssignmentScene::Update(double dt)
 		LeftLegX = 90.0f;
 		RightLegX = 90.0f;
 		ArmRotation = 0.0f;
-		TranslateBodyY = 15.0f;
+		//TranslateBodyY = 15.0f;
 
 	}
 
-	if (Application::IsKeyPressed('P'))
+	Obj[OBJ_BOX2]->setOBB(Vector3(TranslateBodyX, TranslateBodyY, TranslateBodyZ));
+
+	if (Application::IsKeyPressed('P')) //Pointer pointing to an object
 		b_viewStats = true;
 	else
 		b_viewStats = false;
@@ -459,17 +468,14 @@ void AssignmentScene::Update(double dt)
 	{
 		speed -= (20 * dt);
 	}
+	if (ObjectBox::checkCollision(*Obj[OBJ_BOX2], *Obj[OBJ_BOX]))
+		collide = true;
+	else
+		collide = false;
 
-	if (speed >= 0.0)
-	{
-		speed -= speed * 0.2 * (dt);
-		TranslateBodyZ += speed * dt;
-	}
-	else 
-	{
-		speed += speed * -0.2 * (dt);
-		TranslateBodyZ += speed * dt;
-	}
+	speed -= speed * 0.2 * (dt); 
+	TranslateBodyZ += speed * dt;
+
 	std::cout << speed << std::endl;
 
 
@@ -490,7 +496,7 @@ void AssignmentScene::Update(double dt)
 	//	light[0].position.y += (float)(LSPEED * dt);
 
 	//<--Walking animation-->
-	if (checkmodelStack)
+	/*if (checkmodelStack)
 	{
 		if (running)
 		{
@@ -528,7 +534,7 @@ void AssignmentScene::Update(double dt)
 				bodyMovement = true;
 			}
 		}
-	}
+	}*/
 
 	if (getCurrentCam)
 	{
@@ -585,6 +591,8 @@ void AssignmentScene::Update(double dt)
 		//to do: switch light type to SPOT and pass the information to shader
 	}
 
+
+
 	//PlayMusic();
 	camera.Update(dt);
 }
@@ -625,12 +633,6 @@ void AssignmentScene::Render()
 			&lightPosition_cameraspace.x);
 	}
 
-
-	if (TranslateBodyZ>10)
-	{
-		TranslateBodyZ = -50;
-		speed = speed * 0.5;
-	}
 	modelStack.PushMatrix();
 	modelStack.Translate(0, 5, 10);
 	modelStack.Scale(5, 5, 5);
@@ -649,6 +651,16 @@ void AssignmentScene::Render()
 	RenderMesh(meshList[GEO_LIGHTBALL], false);
 	modelStack.PopMatrix();
 
+	modelStack.PushMatrix();
+	modelStack.Translate(50,0,0);
+	RenderMesh(meshList[GEO_BOX], false);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	modelStack.Translate(TranslateBodyX, TranslateBodyY, TranslateBodyZ);
+	RenderMesh(meshList[GEO_BOX2], false);
+	modelStack.PopMatrix();
+
 	//<--BMO-->
 	if (b_BMO)
 	{
@@ -658,6 +670,7 @@ void AssignmentScene::Render()
 		modelStack.Rotate(RotateBody, 0.0f, 1.0f, 0.0f);
 		modelStack.Scale(1.5f, 1.5f, 1.5f);
 		RenderMesh(meshList[GEO_BODY], false);
+		
 
 		//<-----------Right Arms----------->
 		modelStack.PushMatrix();
@@ -863,6 +876,20 @@ void AssignmentScene::Render()
 		RenderTextOnScreen(meshList[GEO_TEXT], ("View stats:[P]"), Color(0, 0, 0), 2, 54, 58);
 		modelStack.PopMatrix();
 	}
+
+	if (collide)
+	{
+		modelStack.PushMatrix();
+		RenderTextOnScreen(meshList[GEO_TEXT], ("Collide"), Color(0, 0, 0), 2, 52, 50);
+		modelStack.PopMatrix();
+	}
+	else
+	{
+		modelStack.PushMatrix();
+		RenderTextOnScreen(meshList[GEO_TEXT], ("No Collide"), Color(0, 0, 0), 2, 54, 50);
+		modelStack.PopMatrix();
+	}
+
 	int speedct = abs(speed);
 	modelStack.PushMatrix();
 	RenderTextOnScreen(meshList[GEO_TEXT], std::to_string(speedct), Color(1, 1, 1), 3, 2, 55);
