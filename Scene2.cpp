@@ -164,13 +164,13 @@ void Scene2::Init() //defines what shader to use
 	//meshList[GEO_AXES] = MeshBuilder::GenerateAxes("Reference", 1000.0f, 1000.0f, 1000.0f);
 
 	meshList[GEO_FRONT] = MeshBuilder::GenerateQuad("front", Color(1, 1, 1), 1.0f, 0.0f, 1.0f);
-	meshList[GEO_FRONT]->textureID = LoadTGA("Image//Wall.tga");
+	meshList[GEO_FRONT]->textureID = LoadTGA("Image//WallWindow.tga");
 
 	meshList[GEO_BACK] = MeshBuilder::GenerateQuad("back", Color(1, 1, 1), 1.0f, 0.0f, 1.0f);
-	meshList[GEO_BACK]->textureID = LoadTGA("Image//Wall.tga");
+	meshList[GEO_BACK]->textureID = LoadTGA("Image//WallWindow.tga");
 
 	meshList[GEO_LEFT] = MeshBuilder::GenerateQuad("left", Color(1, 1, 1), 1.0f, 0.0f, 1.0f);
-	meshList[GEO_LEFT]->textureID = LoadTGA("Image//Wall.tga");
+	meshList[GEO_LEFT]->textureID = LoadTGA("Image//WallExit.tga");
 
 	meshList[GEO_RIGHT] = MeshBuilder::GenerateQuad("right", Color(1, 1, 1), 1.0f, 0.0f, 1.0f);
 	meshList[GEO_RIGHT]->textureID = LoadTGA("Image//Wall.tga");
@@ -186,7 +186,7 @@ void Scene2::Init() //defines what shader to use
 
 	// Stuff added so far
 	meshList[GEO_STRETCHER] = MeshBuilder::GenerateOBJ("Stretcher", "OBJ//Stretcher.obj");
-	meshList[GEO_STRETCHER]->textureID = LoadTGA("Image//Stretcher.tga");
+	meshList[GEO_STRETCHER]->textureID = LoadTGA("Image//Stretcher.tga"); // texture not matching obj
 
 	meshList[GEO_DEFIBRILLATOR] = MeshBuilder::GenerateOBJ("Defibrillator", "OBJ//Defibrillator2.obj");
 	meshList[GEO_DEFIBRILLATOR]->textureID = LoadTGA("Image//Defibrillator2.tga");
@@ -194,8 +194,11 @@ void Scene2::Init() //defines what shader to use
 	meshList[GEO_FIRSTAIDKIT] = MeshBuilder::GenerateOBJ("FirstAidKit", "OBJ//FirstAidKit.obj");
 	meshList[GEO_FIRSTAIDKIT]->textureID = LoadTGA("Image//FirstAidKit.tga");
 
-	meshList[GEO_CABINET] = MeshBuilder::GenerateOBJ("Cabinet2", "OBJ//Cabinet2.obj");
-	meshList[GEO_CABINET]->textureID = LoadTGA("Image//Cabinet2.tga");
+	meshList[GEO_CABINET] = MeshBuilder::GenerateOBJ("Cabinet", "OBJ//Cabinet.obj");
+	meshList[GEO_CABINET]->textureID = LoadTGA("Image//Cabinet.tga");
+
+	meshList[GEO_CABINET2] = MeshBuilder::GenerateOBJ("Cabinet2", "OBJ//Cabinet2.obj");
+	meshList[GEO_CABINET2]->textureID = LoadTGA("Image//Cabinet2.tga");
 
 	meshList[GEO_CHAIR] = MeshBuilder::GenerateOBJ("Chair", "OBJ//Chair.obj");
 	meshList[GEO_CHAIR]->textureID = LoadTGA("Image//Chair.tga");
@@ -204,11 +207,7 @@ void Scene2::Init() //defines what shader to use
 	meshList[GEO_TOPSHELVE]->textureID = LoadTGA("Image//TopShelve.tga");
 
 	meshList[GEO_METALSHELVE] = MeshBuilder::GenerateOBJ("MetalShelve", "OBJ//MetalShelve.obj");
-	meshList[GEO_METALSHELVE]->textureID = LoadTGA("Image//MetalShelve.tga");
-
-	// Crashes
-	//meshList[GEO_DEFIBRILLATOR] = MeshBuilder::GenerateOBJ("Defibrillator", "OBJ//Defibrillator.obj");
-	//meshList[GEO_DEFIBRILLATOR]->textureID = LoadTGA("Image//Defibrillator.tga");
+	meshList[GEO_METALSHELVE]->textureID = LoadTGA("Image//MetalShelveNew.tga");
 }
 
 //void Scene2::PlayMusic()
@@ -510,43 +509,68 @@ void Scene2::Render()
 	//modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
-	modelStack.Translate(0, 0, 20);
+	//modelStack.Translate(-5, 0, 10);
+	modelStack.Translate(0, 0, -16);
+	modelStack.Scale(1.5, 1, 1.5);
 	RenderMesh(meshList[GEO_STRETCHER], false);
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
-	modelStack.Translate(5, 0, 0);
+	modelStack.Translate(20, 22, 0);
 	modelStack.Scale(2, 2, 2);
 	RenderMesh(meshList[GEO_DEFIBRILLATOR], false);
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
-	modelStack.Translate(-5, 0, 0);
+	modelStack.Translate(20, 20, -5);
 	modelStack.Scale(2, 2, 2);
 	RenderMesh(meshList[GEO_FIRSTAIDKIT], false);
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
 	modelStack.Rotate(270, 0, 1, 0);
-	modelStack.Translate(-25, 0, 15);
+	modelStack.Translate(-18, 0, 15);
 	modelStack.Scale(2, 2, 2);
 	RenderMesh(meshList[GEO_CABINET], false);
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
-	modelStack.Scale(1, 1, 1);
+	modelStack.Translate(-23, 0, 15);
+	modelStack.Scale(1.5, 1.5, 1.5);
+	RenderMesh(meshList[GEO_CABINET2], false);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	modelStack.Translate(20, 0, 13);
+	modelStack.Rotate(270, 0, 1, 0);
+	modelStack.Scale(1.5, 1.5, 1.5);
 	RenderMesh(meshList[GEO_CHAIR], false);
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
-	modelStack.Translate(0, 15, 0);
-	modelStack.Scale(1, 1, 1);
-	RenderMesh(meshList[GEO_TOPSHELVE], false);
+	modelStack.Translate(3, 23, -15);
+	modelStack.Scale(2, 2, 2);
+	RenderMesh(meshList[GEO_TOPSHELVE], false); // same side as cabinet
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
-	modelStack.Translate(10, 0, 0);
-	modelStack.Scale(1, 1, 1);
+	modelStack.Translate(-10, 23, 15);
+	modelStack.Rotate(180, 0, 1, 0);
+	modelStack.Scale(2, 2, 2);
+	RenderMesh(meshList[GEO_TOPSHELVE], false); // diff side as cabinet
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	modelStack.Translate(10, 23, 15);
+	modelStack.Rotate(180, 0, 1, 0);
+	modelStack.Scale(2, 2, 2);
+	RenderMesh(meshList[GEO_TOPSHELVE], false); // diff side as cabinet
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	modelStack.Rotate(90, 0, 1, 0);
+	modelStack.Translate(5, 0, 20);
+	modelStack.Scale(2, 2, 2);
 	RenderMesh(meshList[GEO_METALSHELVE], false);
 	modelStack.PopMatrix();
 }
@@ -599,14 +623,14 @@ static const float SKYBOXSIZE = 30.f;
 void Scene2::RenderSkybox()
 {
 	modelStack.PushMatrix();
-	modelStack.Scale(SKYBOXSIZE, SKYBOXSIZE, SKYBOXSIZE);
+	modelStack.Scale(SKYBOXSIZE, 15.0f, 20.0f);
 	modelStack.Translate(0.0f, 1.0f, -1.0f);
 	modelStack.Rotate(90, 1.0f, 0.0f, 0.0f);
 	RenderMesh(meshList[GEO_BACK], false);
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
-	modelStack.Scale(SKYBOXSIZE, SKYBOXSIZE, SKYBOXSIZE);
+	modelStack.Scale(SKYBOXSIZE, 15.0f, 20.0f);
 	modelStack.Translate(0.0f, 1.0f, 1.0f);
 	modelStack.Rotate(180, 0.0f, 1.0f, 0.0f);
 	modelStack.Rotate(90, 1.0f, 0.0f, 0.0f);
@@ -614,22 +638,22 @@ void Scene2::RenderSkybox()
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
-	modelStack.Scale(SKYBOXSIZE, SKYBOXSIZE, SKYBOXSIZE);
-	modelStack.Translate(0.0f, 2.0f, 0.0f);
+	modelStack.Scale(SKYBOXSIZE, SKYBOXSIZE, 20.0f);
+	modelStack.Translate(0.0f, 1.0f, 0.0f); // y ori 2
 	modelStack.Rotate(180, 0.0f, 0.0f, 1.0f);
 	modelStack.Rotate(270, 0.0f, 1.0f, 0.0f);
 	RenderMesh(meshList[GEO_TOP], false);
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
-	modelStack.Scale(SKYBOXSIZE, SKYBOXSIZE, SKYBOXSIZE);
+	modelStack.Scale(SKYBOXSIZE, SKYBOXSIZE, 20.0f);
 	modelStack.Rotate(270, 0.0f, 1.0f, 0.0f);
 	modelStack.Translate(0.0f, -0.00f, 0.0f);
 	RenderMesh(meshList[GEO_BOTTOM], false);
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
-	modelStack.Scale(SKYBOXSIZE, SKYBOXSIZE, SKYBOXSIZE);
+	modelStack.Scale(SKYBOXSIZE, 15.0f, 20.0f);
 	modelStack.Translate(-1.0f, 1.0f, 0.0f);
 	modelStack.Rotate(90, 0.0f, 1.0f, 0.0f);
 	modelStack.Rotate(90, 1.0f, 0.0f, 0.0f);
@@ -637,7 +661,7 @@ void Scene2::RenderSkybox()
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
-	modelStack.Scale(SKYBOXSIZE, SKYBOXSIZE, SKYBOXSIZE);
+	modelStack.Scale(SKYBOXSIZE, 15.0f, 20.0f);
 	modelStack.Translate(0.98f, 0.96f, 0.0f);
 	modelStack.Rotate(-90, 0.0f, 1.0f, 0.0f);
 	modelStack.Rotate(90, 1.0f, 0.0f, 0.0f);
