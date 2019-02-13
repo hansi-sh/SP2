@@ -130,9 +130,9 @@ void AssignmentScene::Init() //defines what shader to use
 	glUseProgram(m_programID);
 
 	light[0].type = Light::LIGHT_POINT; //light of the room
-	light[0].position.Set(0.0f, 150.0f, 0.0f);//position of light
+	light[0].position.Set(0.0f, 40.0f, 0.0f);//position of light
 	light[0].color.Set(1, 1, 1);//color that light emits
-	light[0].power = 5.0f;
+	light[0].power = 2.0f;
 	light[0].kC = 1.f;
 	light[0].kL = 0.01f;
 	light[0].kQ = 0.001f;
@@ -238,8 +238,8 @@ void AssignmentScene::Init() //defines what shader to use
 	meshList[GEO_HOSPITAL] = MeshBuilder::GenerateOBJ("hospital", "OBJ//building.obj");
 	meshList[GEO_HOSPITAL]->textureID = LoadTGA("Image//hospital.tga");
 
-	meshList[GEO_RACETRACK] = MeshBuilder::GenerateOBJ("racetrack", "OBJ//track.obj");
-	//meshList[GEO_RACETRACK]->textureID = LoadTGA("Image//racetrack.tga");
+	meshList[GEO_RACETRACK] = MeshBuilder::GenerateOBJ("racetrack", "OBJ//racetrack.obj");
+	meshList[GEO_RACETRACK]->textureID = LoadTGA("Image//racetrack.tga");
 
 }
 
