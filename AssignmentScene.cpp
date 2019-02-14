@@ -80,7 +80,7 @@ void AssignmentScene::Init() //defines what shader to use
 
 	LSPEED = 30.0f;
 
-	camera.Init(Vector3(0, 20, 80), Vector3(0, 0, 0), Vector3(0, 1, 0));
+	camera.Init(Vector3(0, 160, 80), Vector3(0, 0, 0), Vector3(0, 1, 0));
 
 	currentCamPos = camera.position;
 	currentCamTarget = camera.target;
@@ -130,9 +130,9 @@ void AssignmentScene::Init() //defines what shader to use
 	glUseProgram(m_programID);
 
 	light[0].type = Light::LIGHT_POINT; //light of the room
-	light[0].position.Set(0.0f, 40.0f, 0.0f);//position of light
+	light[0].position.Set(0.0f, 200.0f, 0.0f);//position of light
 	light[0].color.Set(1, 1, 1);//color that light emits
-	light[0].power = 2.0f;
+	light[0].power = 4.0f;
 	light[0].kC = 1.f;
 	light[0].kL = 0.01f;
 	light[0].kQ = 0.001f;
@@ -215,22 +215,22 @@ void AssignmentScene::Init() //defines what shader to use
 	//meshList[GEO_TRIPRISM]->material.kShininess = 1.0f;
 
 	meshList[GEO_FRONT] = MeshBuilder::GenerateQuad("front", Color(1, 1, 1), 1.0f, 0.0f, 1.0f);
-	meshList[GEO_FRONT]->textureID = LoadTGA("Image//front.tga");
+	meshList[GEO_FRONT]->textureID = LoadTGA("Image//front3.tga");
 
 	meshList[GEO_BACK] = MeshBuilder::GenerateQuad("back", Color(1, 1, 1), 1.0f, 0.0f, 1.0f);
-	meshList[GEO_BACK]->textureID = LoadTGA("Image//back.tga");
+	meshList[GEO_BACK]->textureID = LoadTGA("Image//back3.tga");
 
 	meshList[GEO_RIGHT] = MeshBuilder::GenerateQuad("left", Color(1, 1, 1), 1.0f, 0.0f, 1.0f);
-	meshList[GEO_RIGHT]->textureID = LoadTGA("Image//left.tga");
+	meshList[GEO_RIGHT]->textureID = LoadTGA("Image//right3.tga");
 
 	meshList[GEO_LEFT] = MeshBuilder::GenerateQuad("right", Color(1, 1, 1), 1.0f, 0.0f, 1.0f);
-	meshList[GEO_LEFT]->textureID = LoadTGA("Image//right.tga");
+	meshList[GEO_LEFT]->textureID = LoadTGA("Image//left3.tga");
 
 	meshList[GEO_TOP] = MeshBuilder::GenerateQuad("top", Color(1, 1, 1), 1.0f, 0.0f, 1.0f);
-	meshList[GEO_TOP]->textureID = LoadTGA("Image//top.tga");
+	meshList[GEO_TOP]->textureID = LoadTGA("Image//top3.tga");
 
 	meshList[GEO_BOTTOM] = MeshBuilder::GenerateQuad("bottom", Color(1, 1, 1), 1.0f, 0.0f, 1.0f);
-	meshList[GEO_BOTTOM]->textureID = LoadTGA("Image//bottom.tga");
+	meshList[GEO_BOTTOM]->textureID = LoadTGA("Image//bottom3.tga");
 
 	meshList[GEO_TEXT] = MeshBuilder::GenerateText("text", 16, 16);
 	meshList[GEO_TEXT]->textureID = LoadTGA("Image//calibri.tga");
@@ -240,53 +240,7 @@ void AssignmentScene::Init() //defines what shader to use
 
 	meshList[GEO_RACETRACK] = MeshBuilder::GenerateOBJ("racetrack", "OBJ//racetrack.obj");
 	meshList[GEO_RACETRACK]->textureID = LoadTGA("Image//racetrack.tga");
-
 }
-
-//void AssignmentScene::PlayMusic()
-//{
-//	if ((TranslateBodyX > 30 && (TranslateBodyZ > 0 && TranslateBodyZ < 90)))
-//		b_checkinPM = true;
-//	else
-//	{
-//		b_checkinPM = false;
-//		b_inPM = false;
-//	}
-//
-//	if (b_checkinPM && !b_inPM)
-//	{
-//		if (!b_inPM)
-//		{
-//			b_musicSelected = false;
-//			b_inPM = true;
-//		}
-//		b_inPC = false;
-//	}
-//	else if(!b_inPC && !b_inPM)
-//	{
-//		if (!b_inPC)
-//		{
-//			b_musicSelected = false;
-//			b_inPC = true;
-//		}
-//		b_musicSelected = false;
-//		b_inPM = false;
-//	}
-//
-//	if (!b_musicSelected)
-//	{
-//		if (b_inPM)
-//		{
-//			PlaySound(TEXT("Audio//PokeMart.wav"), NULL, SND_ASYNC | SND_LOOP);
-//			b_musicSelected = true;
-//		}
-//		else
-//		{
-//			PlaySound(TEXT("Audio//PokeCenter.wav"), NULL, SND_ASYNC | SND_LOOP);
-//			b_musicSelected = true;
-//		}
-//	}
-//}
 
 void AssignmentScene::Update(double dt)
 {
@@ -319,59 +273,6 @@ void AssignmentScene::Update(double dt)
 	{	
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	}
-	if (Application::IsKeyPressed('0'))
-	{
-		TranslateBodyY = 0.0f;
-		TranslateBodyY = 15.0f;
-		TranslateBodyZ = 0.0f;
-	}
-	if (Application::IsKeyPressed('T'))
-	{	
-		RotateBody = 180.0f;
-		if (TranslateBodyZ > -90.0f)
-		{
-		TranslateBodyZ -= (float)(dt * 16);
-		checkmodelStack = true;
-		}
-	}
-	else if (Application::IsKeyPressed('F'))
-	{	
-		RotateBody = 270.0f;
-		if (TranslateBodyX > -90.0f)
-		{
-		TranslateBodyX -= (float)(dt * 16);
-		checkmodelStack = true;
-		}
-	}
-	else if (Application::IsKeyPressed('G'))
-	{	
-		RotateBody = 0.0f;
-		if (TranslateBodyZ < 90.0f)
-		{
-		TranslateBodyZ += (float)(dt * 16);
-		checkmodelStack = true;
-		}
-	}
-	else if (Application::IsKeyPressed('H'))
-	{	
-		RotateBody = 90.0f;
-		if (TranslateBodyX < 90.0f)
-		{
-		TranslateBodyX += (float)(dt * 16);
-		checkmodelStack = true;
-		}
-	}
-	else
-	{
-		checkmodelStack = false;
-		running = true;
-		bodyMovement = true;
-		LeftLegX = 90.0f;
-		RightLegX = 90.0f;
-		ArmRotation = 0.0f;
-		TranslateBodyY = 15.0f;
-
-	}
 
 	if (Application::IsKeyPressed('P'))
 		b_viewStats = true;
@@ -394,82 +295,11 @@ void AssignmentScene::Update(double dt)
 	if (Application::IsKeyPressed('O'))
 		light[0].position.y += (float)(LSPEED * dt);
 
-	//<--Walking animation-->
-	//if (checkmodelStack)
-	//{
-	//	if (running)
-	//	{
-	//		ArmRotation -= (float)(dt * 3) * 90;
-	//		LeftLegX += (float)(dt) * 50;
-	//		RightLegX -= (float)(dt) * 50;
-	//		if (LeftLegX > 100)
-	//		{
-	//			running = false;
-	//		}
-	//	}
-	//	else
-	//	{
-	//		ArmRotation += (float)(dt * 3) * 90;
-	//		LeftLegX -= (float)(dt) * 50;
-	//		RightLegX += (float)(dt) * 50;
-	//		if (LeftLegX < 80)
-	//		{
-	//			running = true;
-	//		}
-	//	}
-
-	//	if (bodyMovement)
-	//	{
-	//		TranslateBodyY += (float)(dt * 5);
-	//		if (TranslateBodyY > 16.0f)
-	//		{
-	//			bodyMovement = false;
-	//		}
-	//	}
-	//	else {
-	//		TranslateBodyY -= (float)(dt * 5);
-	//		if (TranslateBodyY <= 15.0f)
-	//		{
-	//			bodyMovement = true;
-	//		}
-	//	}
-	//}
-
 	if (getCurrentCam)
 	{
 		currentCamPos = camera.position;
 		currentCamTarget = camera.target;
 	}
-
-	//<For switching camera position and target temporary example>
-	//if (Application::IsKeyPressed('V') && b_NearShowcase == true && i_ShowcaseItem > 0 )//must be near enough, do range check
-	//{
-	//	getCurrentCam = false;
-	//	b_BMO = false;
-	//	if (i_ShowcaseItem == 1)//Cubone
-	//	{
-	//		camera.target = Vector3(-65.295425f, 23.506683f, 5.0808f);
-	//		camera.position = Vector3(-64.389885f, 23.570976f, 4.6615f);
-
-	//	}
-	//	else if (i_ShowcaseItem == 2)//Beast ball
-	//	{
-	//		camera.target = Vector3(-67.434624f, 15.368983f, -4.589f);
-	//		camera.position = Vector3(-66.434624f, 15.468983f, -4.889f);
-	//	}
-	//	else if (i_ShowcaseItem == 3)//Pokeball
-	//	{
-	//		camera.target = Vector3(-68.513283f, 22.983822f, -19.27f);
-	//		camera.position = Vector3(-67.562569f, 23.133141f, -19.54f);
-	//	}
-	//}
-	//else
-	//{
-	//	camera.position = currentCamPos;
-	//	camera.target = currentCamTarget;
-	//	getCurrentCam = true;
-	//	b_BMO = true;
-	//}
 
 	if (Application::IsKeyPressed('Z'))
 	{
@@ -490,7 +320,7 @@ void AssignmentScene::Update(double dt)
 		//to do: switch light type to SPOT and pass the information to shader
 	}
 
-	/*PlayMusic();*/
+	
 	camera.Update(dt);
 }
 
@@ -546,51 +376,19 @@ void AssignmentScene::Render()
 	//	RenderMesh(meshList[GEO_USB], false);
 	//	modelStack.PopMatrix();
 
-	//	//<-----------Dark Blue Button----------->
-	//	modelStack.PushMatrix();
-	//	modelStack.Translate(3.0f, -1.0f, 3.4f);
-	//	modelStack.Scale(0.5f, 0.5f, 0.5f);
-	//	RenderButton(GEO_BLUEBUTTONCIRCLE, GEO_BLUEBUTTONCYLINDER);
-	//	modelStack.PopMatrix();
+	modelStack.PushMatrix();
+	modelStack.Scale(8, 8, 8);
+	modelStack.Translate(-12, 20, 0);
+	modelStack.Rotate(90, 0, 1, 0);
+	RenderMesh(meshList[GEO_HOSPITAL], true);
+	modelStack.PopMatrix();
 
-	//	//<-----------Green Button----------->
-	//	modelStack.PushMatrix();
-	//	modelStack.Translate(3.5f, -3.5f, 3.4f);
-	//	modelStack.Scale(0.35f, 0.35f, 0.35f);
-	//	RenderButton(GEO_GREENBUTTONCIRCLE, GEO_GREENBUTTONCYLINDER);
-	//	modelStack.PopMatrix();
-
-	//	//<-----------Red Button----------->
-	//	modelStack.PushMatrix();
-	//	modelStack.Translate(2.5f, -4.5f, 3.4f);
-	//	modelStack.Scale(0.55f, 0.55f, 0.55f);
-	//	RenderButton(GEO_REDBUTTONCIRCLE, GEO_REDBUTTONCYLINDER);
-	//	modelStack.PopMatrix();
-
-
-	//	//<-----------Triangle Button----------->
-	//	modelStack.PushMatrix();
-	//	modelStack.Translate(2.2f, -2.6f, 3.4f);
-	//	modelStack.Scale(0.6f, 0.6f, 0.6f);
-	//	RenderMesh(meshList[GEO_TRIPRISM], false);
-
-	//	modelStack.PopMatrix();
-
-	//	//<-----------Movement "+" Button----------->
-	//	modelStack.PushMatrix();
-	//	modelStack.Translate(-2.0f, -3.5f, 0.7f);
-	//	modelStack.Scale(0.55f, 0.55f, 0.55f);
-	//	RenderMesh(meshList[GEO_YELLOWBUTTONCUBOID], false);
-
-	//	modelStack.PushMatrix();
-	//	modelStack.Rotate(90, 0.0f, 0.0f, 1.0f);
-	//	RenderMesh(meshList[GEO_YELLOWBUTTONCUBOID], false);
-
-	//	modelStack.PopMatrix();
-	//	modelStack.PopMatrix();
-	//	modelStack.PopMatrix();
-	//}
-	////<--BMO-->
+	modelStack.PushMatrix();
+	modelStack.Scale(8, 8, 8);
+	modelStack.Translate(-0.5f, 20, 0);
+	modelStack.Rotate(180, 0, 1, 0);
+	RenderMesh(meshList[GEO_RACETRACK], true);
+	modelStack.PopMatrix();
 
 	if (b_viewStats)
 	{
@@ -599,15 +397,6 @@ void AssignmentScene::Render()
 	RenderTextOnScreen(meshList[GEO_TEXT], ("FPS:" + std::to_string(fps)), Color(0, 0, 0), 2, 52, 58);
 	modelStack.PopMatrix();
 
-	////<--Get BMOS x position-->
-	//modelStack.PushMatrix();
-	//RenderTextOnScreen(meshList[GEO_TEXT], ("X:" + std::to_string(TranslateBodyX)), Color(0, 0, 0), 2, 56, 56);
-	//modelStack.PopMatrix();
-
-	////<--Get BMOS z position-->
-	//modelStack.PushMatrix();
-	//RenderTextOnScreen(meshList[GEO_TEXT], ("Z:" + std::to_string(TranslateBodyZ)), Color(0, 0, 0), 2, 56, 54);
-	//modelStack.PopMatrix();
 	}
 	else
 	{
@@ -622,25 +411,12 @@ void AssignmentScene::Render()
 	modelStack.PopMatrix();
 
 	//<--Get cameras position-->
-	//modelStack.PushMatrix();
-	//RenderTextOnScreen(meshList[GEO_TEXT], ("Pos X:" + std::to_string(camera.position.x)+", Y:"+ std::to_string(camera.position.y) +" , Z:"+ std::to_string(camera.position.z)), Color(0, 1, 0), 2, 2, 5);
-	//modelStack.PopMatrix();
-	//
-	//modelStack.PushMatrix();
-	//RenderTextOnScreen(meshList[GEO_TEXT], ("Tar X:" + std::to_string(camera.target.x)+", Y:"+ std::to_string(camera.target.y) +" , Z:"+ std::to_string(camera.target.z)), Color(1, 0, 0), 2, 2, 7);
-	//modelStack.PopMatrix();
-
 	modelStack.PushMatrix();
-	modelStack.Scale(5, 5, 5);
-	modelStack.Translate(10, 0, 0);
-	modelStack.Rotate(-90, 0, 1, 0);
-	RenderMesh(meshList[GEO_HOSPITAL], true);
+	RenderTextOnScreen(meshList[GEO_TEXT], ("Pos X:" + std::to_string(camera.position.x)+", Y:"+ std::to_string(camera.position.y) +" , Z:"+ std::to_string(camera.position.z)), Color(0, 1, 0), 2, 2, 5);
 	modelStack.PopMatrix();
-
+	
 	modelStack.PushMatrix();
-	modelStack.Scale(5, 5, 5);
-	modelStack.Translate(-0.5f, 0, 0);
-	RenderMesh(meshList[GEO_RACETRACK], true);
+	RenderTextOnScreen(meshList[GEO_TEXT], ("Tar X:" + std::to_string(camera.target.x)+", Y:"+ std::to_string(camera.target.y) +" , Z:"+ std::to_string(camera.target.z)), Color(1, 0, 0), 2, 2, 7);
 	modelStack.PopMatrix();
 }
 
@@ -693,14 +469,14 @@ void AssignmentScene::RenderSkybox()
 {
 	modelStack.PushMatrix();
 	modelStack.Scale(SKYBOXSIZE, SKYBOXSIZE, SKYBOXSIZE);
-	modelStack.Translate(0.0f, 0.96f, -0.98f);
+	modelStack.Translate(0.0f, 0.96f, -1.0f);
 	modelStack.Rotate(90, 1.0f, 0.0f, 0.0f);
 	RenderMesh(meshList[GEO_BACK], false);
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
 	modelStack.Scale(SKYBOXSIZE, SKYBOXSIZE, SKYBOXSIZE);
-	modelStack.Translate(0.0f, 0.96f, 0.98f);
+	modelStack.Translate(0.0f, 0.96f, 1.0f);
 	modelStack.Rotate(180, 0.0f, 1.0f, 0.0f);
 	modelStack.Rotate(90, 1.0f, 0.0f, 0.0f);
 	RenderMesh(meshList[GEO_FRONT], false);
@@ -708,22 +484,22 @@ void AssignmentScene::RenderSkybox()
 
 	modelStack.PushMatrix();
 	modelStack.Scale(SKYBOXSIZE, SKYBOXSIZE, SKYBOXSIZE);
-	modelStack.Translate(0.0f, 1.94f, 0.0f);
+	modelStack.Translate(0.0f, 1.96f, 0.0f);
 	modelStack.Rotate(180, 0.0f, 0.0f, 1.0f);
-	modelStack.Rotate(270, 0.0f, 1.0f, 0.0f);
+	/*modelStack.Rotate(270, 0.0f, 1.0f, 0.0f);*/
 	RenderMesh(meshList[GEO_TOP], false);
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
 	modelStack.Scale(SKYBOXSIZE, SKYBOXSIZE, SKYBOXSIZE);
 	modelStack.Rotate(270, 0.0f, 1.0f, 0.0f);
-	modelStack.Translate(0.0f, -0.02f, 0.0f);
+	modelStack.Translate(0.0f, 0.5f, 0.0f);
 	RenderMesh(meshList[GEO_BOTTOM], false);
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
 	modelStack.Scale(SKYBOXSIZE, SKYBOXSIZE, SKYBOXSIZE);
-	modelStack.Translate(-0.98f, 0.96f, 0.0f);
+	modelStack.Translate(-1.0f, 0.96f, 0.0f);
 	modelStack.Rotate(90, 0.0f, 1.0f, 0.0f);
 	modelStack.Rotate(90, 1.0f, 0.0f, 0.0f);
 	RenderMesh(meshList[GEO_LEFT], false);
@@ -731,7 +507,7 @@ void AssignmentScene::RenderSkybox()
 
 	modelStack.PushMatrix();
 	modelStack.Scale(SKYBOXSIZE, SKYBOXSIZE, SKYBOXSIZE);
-	modelStack.Translate(0.98f, 0.96f, 0.0f);
+	modelStack.Translate(1.0f, 0.96f, 0.0f);
 	modelStack.Rotate(-90, 0.0f, 1.0f, 0.0f);
 	modelStack.Rotate(90, 1.0f, 0.0f, 0.0f);
 	RenderMesh(meshList[GEO_RIGHT], false);
