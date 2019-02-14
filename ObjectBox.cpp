@@ -52,9 +52,10 @@ bool ObjectBox::checkCollision(const ObjectBox A, const ObjectBox B)
 void ObjectBox::setRotatingAxis(float degree, float x, float y, float z)
 {
 	Mtx44 rotateBy;
-	rotateBy.SetToRotation(degree, x, y, z);
+	rotateBy.SetToRotation(degree, x, y, z); //to find the rotational matrix
 
-	xAxis = (rotateBy * xAxis).Normalize();
+	//to multiply the local axis (X/Y/Z) with the rotational matrix to know how much to rotate by and normalize it to make it a unit vector
+	xAxis = (rotateBy * xAxis).Normalize(); 
 	yAxis = (rotateBy * yAxis).Normalize();
 	zAxis = (rotateBy * zAxis).Normalize();
 

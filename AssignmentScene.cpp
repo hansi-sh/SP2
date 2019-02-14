@@ -57,6 +57,11 @@ void AssignmentScene::Init() //defines what shader to use
 	b_viewStats = false;
 	speed = 0;
 
+	//<collison class>
+	collide = false;
+	rotationangle = 0;
+	updatedangle = 0;
+
 	//<----for BMO body animation movement when running---->
 	LeftLegX = 90.0f;
 	RightLegX = 90.0f;
@@ -370,18 +375,6 @@ void AssignmentScene::PlayMusic()
 
 void AssignmentScene::Update(double dt)
 {
-	if (Application::IsKeyPressed('1'))
-	{
-
-	}
-	if (Application::IsKeyPressed('2'))
-	{
-		
-	}
-	if (Application::IsKeyPressed('3'))
-	{
-		
-	}
 
 	if (Application::IsKeyPressed('6'))
 	{	
@@ -450,10 +443,7 @@ void AssignmentScene::Update(double dt)
 		RightLegX = 90.0f;
 		ArmRotation = 0.0f;
 		//TranslateBodyY = 15.0f;
-
 	}
-
-	Obj[OBJ_BOX2]->setOBB(Vector3(TranslateBodyX, TranslateBodyY, TranslateBodyZ));
 
 	if (Application::IsKeyPressed('P')) //Pointer pointing to an object
 		b_viewStats = true;
@@ -468,15 +458,31 @@ void AssignmentScene::Update(double dt)
 	{
 		speed -= (20 * dt);
 	}
-	if (ObjectBox::checkCollision(*Obj[OBJ_BOX2], *Obj[OBJ_BOX]))
-		collide = true;
-	else
-		collide = false;
 
 	speed -= speed * 0.2 * (dt); 
 	TranslateBodyZ += speed * dt;
 
-	std::cout << speed << std::endl;
+	if (Application::IsKeyPressed('1'))
+	{
+		rotationangle += 1.0f;
+		updatedangle = 1.0f;
+	}
+	else if (Application::IsKeyPressed('2'))
+	{
+		rotationangle -= 1.0f;
+		updatedangle = -1.0f;
+	}
+
+	Obj[OBJ_BOX2]->setRotatingAxis(updatedangle, 0.0f, 1.0f, 0.0f);
+	updatedangle = 0;
+
+	Obj[OBJ_BOX2]->setOBB(Vector3(TranslateBodyX, TranslateBodyY, TranslateBodyZ));
+
+	//<collision>
+	if (ObjectBox::checkCollision(*Obj[OBJ_BOX2], *Obj[OBJ_BOX]))
+		collide = true;
+	else
+		collide = false;
 
 
 	fps = 1.0f / (float)dt;
@@ -658,6 +664,7 @@ void AssignmentScene::Render()
 
 	modelStack.PushMatrix();
 	modelStack.Translate(TranslateBodyX, TranslateBodyY, TranslateBodyZ);
+	modelStack.Rotate(rotationangle, 0, 1, 0);
 	RenderMesh(meshList[GEO_BOX2], false);
 	modelStack.PopMatrix();
 

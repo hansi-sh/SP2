@@ -70,7 +70,10 @@ private:
 	
 	bool b_BMO;
 	bool b_viewStats;
+
 	bool collide;
+	float rotationangle;
+	float updatedangle;
 
 	//For Running Animation
 	bool checkmodelStack;
