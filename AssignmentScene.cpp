@@ -407,7 +407,7 @@ void AssignmentScene::Update(double dt)
 		checkmodelStack = true;
 		}
 	}
-	else if (Application::IsKeyPressed('F'))
+	if (Application::IsKeyPressed('F'))
 	{	
 		RotateBody = 270.0f;
 		if (TranslateBodyX > -90.0f)
@@ -416,7 +416,7 @@ void AssignmentScene::Update(double dt)
 		checkmodelStack = true;
 		}
 	}
-	else if (Application::IsKeyPressed('G'))
+	if (Application::IsKeyPressed('G'))
 	{	
 		RotateBody = 0.0f;
 		if (TranslateBodyZ < 90.0f)
@@ -425,7 +425,7 @@ void AssignmentScene::Update(double dt)
 		checkmodelStack = true;
 		}
 	}
-	else if (Application::IsKeyPressed('H'))
+	if (Application::IsKeyPressed('H'))
 	{	
 		RotateBody = 90.0f;
 		if (TranslateBodyX < 90.0f)
@@ -462,12 +462,12 @@ void AssignmentScene::Update(double dt)
 	speed -= speed * 0.2 * (dt); 
 	TranslateBodyZ += speed * dt;
 
-	if (Application::IsKeyPressed('1'))
+	if (Application::IsKeyPressed('1') && !(ObjectBox::checkCollision(*Obj[OBJ_BOX2], *Obj[OBJ_BOX])))
 	{
 		rotationangle += 1.0f;
 		updatedangle = 1.0f;
 	}
-	else if (Application::IsKeyPressed('2'))
+	else if (Application::IsKeyPressed('2') && !(ObjectBox::checkCollision(*Obj[OBJ_BOX2], *Obj[OBJ_BOX])))
 	{
 		rotationangle -= 1.0f;
 		updatedangle = -1.0f;
@@ -480,10 +480,22 @@ void AssignmentScene::Update(double dt)
 
 	//<collision>
 	if (ObjectBox::checkCollision(*Obj[OBJ_BOX2], *Obj[OBJ_BOX]))
+	{
+		TranslateBodyX = prevBodyX;
+		TranslateBodyZ = prevBodyZ;
+		rotationangle = prevAngle;
 		collide = true;
+	}
 	else
+	{
 		collide = false;
+		prevBodyX = TranslateBodyX;
+		prevBodyZ = TranslateBodyZ;
+		prevAngle = rotationangle;
+	}
 
+	//If collision is true, disable player movement,
+	//when the player moves, check which keypress is selected and if detected, set previous position to current;
 
 	fps = 1.0f / (float)dt;
 

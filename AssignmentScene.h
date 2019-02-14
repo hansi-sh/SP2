@@ -74,6 +74,9 @@ private:
 	bool collide;
 	float rotationangle;
 	float updatedangle;
+	float prevBodyX;
+	float prevBodyZ;
+	float prevAngle;
 
 	//For Running Animation
 	bool checkmodelStack;
