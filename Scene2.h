@@ -140,7 +140,9 @@ private:
 		GEO_CABINET,
 		GEO_CABINET2,
 		GEO_CHAIR,
-		GEO_TOPSHELVE,
+		GEO_TOPSHELVE1,
+		GEO_TOPSHELVE2,
+		GEO_TOPSHELVE3,
 		GEO_METALSHELVE,
 
 		GEO_TEXT,
@@ -161,6 +163,10 @@ private:
 
 	void RenderTextOnScreen(Mesh* mesh, std::string text, Color color, float size, float x, float y);
 
+	bool setTrueFalse = true;
+	// for Cabinet 2
+	// when on light the grooves show
+	// off light grooves doesnt show
 };
 
 #endif

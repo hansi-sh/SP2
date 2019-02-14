@@ -134,10 +134,10 @@ void Scene2::Init() //defines what shader to use
 
 	glUseProgram(m_programID);
 
-	light[0].type = Light::LIGHT_POINT; //light of the room
-	light[0].position.Set(0.0f, 150.0f, 0.0f);//position of light
+	light[0].type = Light::LIGHT_SPOT; //light of the room
+	light[0].position.Set(0.0f, 20.0f, 0.0f);//position of light
 	light[0].color.Set(1, 1, 1);//color that light emits
-	light[0].power = 2.0f;
+	light[0].power = 4.0f;
 	light[0].kC = 1.f;
 	light[0].kL = 0.01f;
 	light[0].kQ = 0.001f;
@@ -185,8 +185,8 @@ void Scene2::Init() //defines what shader to use
 	meshList[GEO_TEXT]->textureID = LoadTGA("Image//calibri.tga");
 
 	// Stuff added so far
-	meshList[GEO_STRETCHER] = MeshBuilder::GenerateOBJ("Stretcher", "OBJ//Stretcher.obj");
-	meshList[GEO_STRETCHER]->textureID = LoadTGA("Image//Stretcher.tga"); // texture not matching obj
+	meshList[GEO_STRETCHER] = MeshBuilder::GenerateOBJ("Stretcher", "OBJ//StretcherNew.obj");
+	meshList[GEO_STRETCHER]->textureID = LoadTGA("Image//Stretcher.tga"); 
 
 	meshList[GEO_DEFIBRILLATOR] = MeshBuilder::GenerateOBJ("Defibrillator", "OBJ//Defibrillator2.obj");
 	meshList[GEO_DEFIBRILLATOR]->textureID = LoadTGA("Image//Defibrillator2.tga");
@@ -194,17 +194,23 @@ void Scene2::Init() //defines what shader to use
 	meshList[GEO_FIRSTAIDKIT] = MeshBuilder::GenerateOBJ("FirstAidKit", "OBJ//FirstAidKit.obj");
 	meshList[GEO_FIRSTAIDKIT]->textureID = LoadTGA("Image//FirstAidKit.tga");
 
-	meshList[GEO_CABINET] = MeshBuilder::GenerateOBJ("Cabinet", "OBJ//Cabinet.obj");
+	meshList[GEO_CABINET] = MeshBuilder::GenerateOBJ("Cabinet", "OBJ//Cabinet.obj"); // main cabinet
 	meshList[GEO_CABINET]->textureID = LoadTGA("Image//Cabinet.tga");
 
-	meshList[GEO_CABINET2] = MeshBuilder::GenerateOBJ("Cabinet2", "OBJ//Cabinet2.obj");
-	meshList[GEO_CABINET2]->textureID = LoadTGA("Image//Cabinet2.tga");
+	meshList[GEO_CABINET2] = MeshBuilder::GenerateOBJ("Cabinet2", "OBJ//Cabinet2New.obj"); // med cabinet
+	meshList[GEO_CABINET2]->textureID = LoadTGA("Image//Cabinet2NewNew.tga"); 
 
 	meshList[GEO_CHAIR] = MeshBuilder::GenerateOBJ("Chair", "OBJ//Chair.obj");
 	meshList[GEO_CHAIR]->textureID = LoadTGA("Image//Chair.tga");
 
-	meshList[GEO_TOPSHELVE] = MeshBuilder::GenerateOBJ("TopShelve", "OBJ//TopShelve.obj");
-	meshList[GEO_TOPSHELVE]->textureID = LoadTGA("Image//TopShelve.tga");
+	meshList[GEO_TOPSHELVE1] = MeshBuilder::GenerateOBJ("TopShelve1", "OBJ//TopShelve.obj");
+	meshList[GEO_TOPSHELVE1]->textureID = LoadTGA("Image//TopShelve1.tga");
+
+	meshList[GEO_TOPSHELVE2] = MeshBuilder::GenerateOBJ("TopShelve2", "OBJ//TopShelve.obj");
+	meshList[GEO_TOPSHELVE2]->textureID = LoadTGA("Image//TopShelve2.tga");
+
+	meshList[GEO_TOPSHELVE3] = MeshBuilder::GenerateOBJ("TopShelve3", "OBJ//TopShelve.obj");
+	meshList[GEO_TOPSHELVE3]->textureID = LoadTGA("Image//TopShelve3.tga");
 
 	meshList[GEO_METALSHELVE] = MeshBuilder::GenerateOBJ("MetalShelve", "OBJ//MetalShelve.obj");
 	meshList[GEO_METALSHELVE]->textureID = LoadTGA("Image//MetalShelveNew.tga");
@@ -348,18 +354,18 @@ void Scene2::Update(double dt)
 	fps = 1.0f / (float)dt;
 
 	// Light movement
-	//if (Application::IsKeyPressed('I'))
-	//	light[0].position.z -= (float)(LSPEED * dt);
-	//if (Application::IsKeyPressed('K'))
-	//	light[0].position.z += (float)(LSPEED * dt);
-	//if (Application::IsKeyPressed('J'))
-	//	light[0].position.x -= (float)(LSPEED * dt);
-	//if (Application::IsKeyPressed('L'))
-	//	light[0].position.x += (float)(LSPEED * dt);
-	//if (Application::IsKeyPressed('U'))
-	//	light[0].position.y -= (float)(LSPEED * dt);
-	//if (Application::IsKeyPressed('O'))
-	//	light[0].position.y += (float)(LSPEED * dt);
+	if (Application::IsKeyPressed('I')) // backward
+		light[0].position.z -= (float)(LSPEED * dt);
+	if (Application::IsKeyPressed('K')) // forward
+		light[0].position.z += (float)(LSPEED * dt);
+	if (Application::IsKeyPressed('J')) // left
+		light[0].position.x -= (float)(LSPEED * dt);
+	if (Application::IsKeyPressed('L')) // right
+		light[0].position.x += (float)(LSPEED * dt);
+	if (Application::IsKeyPressed('U')) // down
+		light[0].position.y -= (float)(LSPEED * dt);
+	if (Application::IsKeyPressed('O')) // up
+		light[0].position.y += (float)(LSPEED * dt);
 
 	//<--Walking animation--> removed
 
@@ -468,6 +474,7 @@ void Scene2::Render()
 	RenderMesh(meshList[GEO_LIGHTBALL], false);
 	modelStack.PopMatrix();
 
+
 	//<--BMO--> removed
 
 	if (b_viewStats)
@@ -510,68 +517,69 @@ void Scene2::Render()
 
 	modelStack.PushMatrix();
 	//modelStack.Translate(-5, 0, 10);
-	modelStack.Translate(0, 0, -16);
+	modelStack.Translate(0, 0, 6);
 	modelStack.Scale(1.5, 1, 1.5);
-	RenderMesh(meshList[GEO_STRETCHER], false);
+	RenderMesh(meshList[GEO_STRETCHER], setTrueFalse);
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
-	modelStack.Translate(20, 22, 0);
+	modelStack.Translate(20, 21, 0);
 	modelStack.Scale(2, 2, 2);
-	RenderMesh(meshList[GEO_DEFIBRILLATOR], false);
+	RenderMesh(meshList[GEO_DEFIBRILLATOR], setTrueFalse);
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
 	modelStack.Translate(20, 20, -5);
 	modelStack.Scale(2, 2, 2);
-	RenderMesh(meshList[GEO_FIRSTAIDKIT], false);
+	modelStack.Rotate(270, 0, 1, 0);
+	RenderMesh(meshList[GEO_FIRSTAIDKIT], setTrueFalse);
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
 	modelStack.Rotate(270, 0, 1, 0);
 	modelStack.Translate(-18, 0, 15);
 	modelStack.Scale(2, 2, 2);
-	RenderMesh(meshList[GEO_CABINET], false);
+	RenderMesh(meshList[GEO_CABINET], setTrueFalse);
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
 	modelStack.Translate(-23, 0, 15);
 	modelStack.Scale(1.5, 1.5, 1.5);
-	RenderMesh(meshList[GEO_CABINET2], false);
+	RenderMesh(meshList[GEO_CABINET2], setTrueFalse);
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
 	modelStack.Translate(20, 0, 13);
 	modelStack.Rotate(270, 0, 1, 0);
 	modelStack.Scale(1.5, 1.5, 1.5);
-	RenderMesh(meshList[GEO_CHAIR], false);
+	RenderMesh(meshList[GEO_CHAIR], setTrueFalse);
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
 	modelStack.Translate(3, 23, -15);
 	modelStack.Scale(2, 2, 2);
-	RenderMesh(meshList[GEO_TOPSHELVE], false); // same side as cabinet
+	RenderMesh(meshList[GEO_TOPSHELVE1], setTrueFalse); // same side as cabinet
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
 	modelStack.Translate(-10, 23, 15);
 	modelStack.Rotate(180, 0, 1, 0);
 	modelStack.Scale(2, 2, 2);
-	RenderMesh(meshList[GEO_TOPSHELVE], false); // diff side as cabinet
+	RenderMesh(meshList[GEO_TOPSHELVE2], setTrueFalse); // diff side as cabinet
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
 	modelStack.Translate(10, 23, 15);
 	modelStack.Rotate(180, 0, 1, 0);
 	modelStack.Scale(2, 2, 2);
-	RenderMesh(meshList[GEO_TOPSHELVE], false); // diff side as cabinet
+	RenderMesh(meshList[GEO_TOPSHELVE3], setTrueFalse); // diff side as cabinet
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
 	modelStack.Rotate(90, 0, 1, 0);
 	modelStack.Translate(5, 0, 20);
 	modelStack.Scale(2, 2, 2);
-	RenderMesh(meshList[GEO_METALSHELVE], false);
+	RenderMesh(meshList[GEO_METALSHELVE], setTrueFalse);
 	modelStack.PopMatrix();
 }
 
@@ -626,7 +634,7 @@ void Scene2::RenderSkybox()
 	modelStack.Scale(SKYBOXSIZE, 15.0f, 20.0f);
 	modelStack.Translate(0.0f, 1.0f, -1.0f);
 	modelStack.Rotate(90, 1.0f, 0.0f, 0.0f);
-	RenderMesh(meshList[GEO_BACK], false);
+	RenderMesh(meshList[GEO_BACK], setTrueFalse);
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
@@ -634,7 +642,7 @@ void Scene2::RenderSkybox()
 	modelStack.Translate(0.0f, 1.0f, 1.0f);
 	modelStack.Rotate(180, 0.0f, 1.0f, 0.0f);
 	modelStack.Rotate(90, 1.0f, 0.0f, 0.0f);
-	RenderMesh(meshList[GEO_FRONT], false);
+	RenderMesh(meshList[GEO_FRONT], setTrueFalse);
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
@@ -642,14 +650,14 @@ void Scene2::RenderSkybox()
 	modelStack.Translate(0.0f, 1.0f, 0.0f); // y ori 2
 	modelStack.Rotate(180, 0.0f, 0.0f, 1.0f);
 	modelStack.Rotate(270, 0.0f, 1.0f, 0.0f);
-	RenderMesh(meshList[GEO_TOP], false);
+	RenderMesh(meshList[GEO_TOP], setTrueFalse);
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
 	modelStack.Scale(SKYBOXSIZE, SKYBOXSIZE, 20.0f);
 	modelStack.Rotate(270, 0.0f, 1.0f, 0.0f);
 	modelStack.Translate(0.0f, -0.00f, 0.0f);
-	RenderMesh(meshList[GEO_BOTTOM], false);
+	RenderMesh(meshList[GEO_BOTTOM], setTrueFalse);
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
@@ -657,7 +665,7 @@ void Scene2::RenderSkybox()
 	modelStack.Translate(-1.0f, 1.0f, 0.0f);
 	modelStack.Rotate(90, 0.0f, 1.0f, 0.0f);
 	modelStack.Rotate(90, 1.0f, 0.0f, 0.0f);
-	RenderMesh(meshList[GEO_LEFT], false);
+	RenderMesh(meshList[GEO_LEFT], setTrueFalse);
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
@@ -665,13 +673,9 @@ void Scene2::RenderSkybox()
 	modelStack.Translate(0.98f, 0.96f, 0.0f);
 	modelStack.Rotate(-90, 0.0f, 1.0f, 0.0f);
 	modelStack.Rotate(90, 1.0f, 0.0f, 0.0f);
-	RenderMesh(meshList[GEO_RIGHT], false);
+	RenderMesh(meshList[GEO_RIGHT], setTrueFalse);
 	modelStack.PopMatrix();
 }
-
-// void AssignmentScene::RenderPokeCenter() removed
-
-// void AssignmentScene::RenderButton(int geo_circle, int geo_cylinder) removed
 
 void Scene2::RenderText(Mesh* mesh, std::string text, Color color)
 {
