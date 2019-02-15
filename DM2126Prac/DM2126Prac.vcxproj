@@ -170,6 +170,7 @@
     <ClInclude Include="Source\Material.h" />
     <ClInclude Include="Source\Mesh.h" />
     <ClInclude Include="Source\MeshBuilder.h" />
+    <ClInclude Include="Source\ObjectBox.h" />
     <ClInclude Include="Source\PuzzleRoom.h" />
     <ClInclude Include="Source\Scene.h" />
     <ClInclude Include="Source\Scene2.h" />

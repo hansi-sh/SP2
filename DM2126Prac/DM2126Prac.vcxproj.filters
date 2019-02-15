@@ -107,6 +107,9 @@
     <ClInclude Include="Source\PuzzleRoom.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Source\ObjectBox.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Shader\SimpleFragmentShader.fragmentshader">
