@@ -100,11 +100,9 @@ private:
 	bool getCurrentCam;
 
 	void RenderSkybox();
-	void RenderPokeCenter();
 	
 	bool b_BMO;
 	bool b_viewStats;
-	bool b_viewinv;
 
 	//For Running Animation
 	bool checkmodelStack;
@@ -119,7 +117,7 @@ private:
 	float TranslateBodyZ;
 
 	//<--Music-->
-	void PlayMusic();
+	/*void PlayMusic();*/
 	bool b_musicSelected;
 	bool b_inPM;
 	bool b_checkinPM;
@@ -127,21 +125,9 @@ private:
 
 	enum GEOMETRY_TYPE
 	{
-		GEO_Ball,
 		GEO_LIGHTBALL,
-		GEO_BODY,
-		GEO_FACE,
-		GEO_FACEOFF,
-		GEO_ARMS,
-		GEO_HAND,
-		GEO_LEG,
-		GEO_FEET,
-		GEO_EYESCIRCLE,
-		GEO_EYESCYLINDER,
-		GEO_MOUTHSEMICIRCLE,
-		GEO_MOUTHCYLINDER,
-		GEO_MOUTHQUAD,
-		GEO_USB,
+
+		/*GEO_USB,
 		GEO_YELLOWBUTTONCUBOID,
 		GEO_BLUEBUTTONCIRCLE,
 		GEO_BLUEBUTTONCYLINDER,
@@ -149,16 +135,18 @@ private:
 		GEO_GREENBUTTONCYLINDER,
 		GEO_REDBUTTONCIRCLE,
 		GEO_REDBUTTONCYLINDER,
-		GEO_TRIPRISM,
+		GEO_TRIPRISM,*/
+
 		GEO_LEFT,
 		GEO_RIGHT,
 		GEO_TOP,
 		GEO_BOTTOM,
 		GEO_FRONT,
 		GEO_BACK,
-		GEO_POKECWALLWW,
-		GEO_POKECEILING,
-		GEO_POKECFLOOR,
+
+		GEO_HOSPITAL,
+		GEO_RACETRACK,
+
 		GEO_TEXT,
 		NUM_GEOMETRY,
 	};

@@ -8,7 +8,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "Application.h"
+#include "PuzzleRoom.h"
 #include "AssignmentScene.h"
+#include "Scene2.h"
 
 GLFWwindow* m_window;
 const unsigned char FPS = 60; // FPS of this game
@@ -96,15 +98,41 @@ void Application::Init()
 	glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 }
 
+int Application::GetSceneNumber()
+{
+	return SceneNumber;
+}
+
+int Application::SetSceneNumber(int number)
+{
+	SceneNumber = number;
+	return SceneNumber;
+}
+
 void Application::Run()
 {
+	Scene *scene;
 	//Main Loop
-	Scene *scene = new AssignmentScene();
+	if (GetSceneNumber()==2)
+	{
+		scene = new Scene2();
+		glfwSetCursorPosCallback(m_window, Scene2::mouse_callback);// when ever the cursor moves, this function will be called
+	}
+	else if (GetSceneNumber() == 3)
+	{
+		scene = new AssignmentScene();
+		glfwSetCursorPosCallback(m_window, AssignmentScene::mouse_callback);// when ever the cursor moves, this function will be called
+	}
+	else
+	{
+		scene = new PuzzleRoom();
+		glfwSetCursorPosCallback(m_window, PuzzleRoom::mouse_callback);// when ever the cursor moves, this function will be called
+	}
+	
 
 	scene->Init();
 
 	m_timer.startTimer();    // Start timer to calculate how long it takes to render this frame
-	glfwSetCursorPosCallback(m_window, AssignmentScene::mouse_callback);// when ever the cursor moves, this function will be called
 	
 	while (!glfwWindowShouldClose(m_window) && !IsKeyPressed(VK_ESCAPE))
 	{

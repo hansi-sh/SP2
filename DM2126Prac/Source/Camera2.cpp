@@ -21,37 +21,40 @@ void Camera2::Update(double dt)
 {
 	static const float CAMERA_SPEED = 50.f;
 	Vector3 view = (target - position).Normalized();
+	Vector3 horizontalView = view;
+	horizontalView.y = 0.0f;
+	horizontalView = (horizontalView).Normalized();
 	Vector3 right = view.Cross(up);
-
-	if(Application::IsKeyPressed('A'))
+	float cameraspeedchange = 0.1;
+	if (Application::IsKeyPressed('A'))
 	{
-		position = position - right;
-		target = position + view;
+		position = position - right * cameraspeedchange;
+		target = position + view * cameraspeedchange;
 	}
-	if(Application::IsKeyPressed('D'))
+	if (Application::IsKeyPressed('D'))
 	{
-		position = position + right;
-		target = position + view;
+		position = position + right * cameraspeedchange;
+		target = position + view * cameraspeedchange;
 	}
-	if(Application::IsKeyPressed('Q'))
+	if (Application::IsKeyPressed('Q'))
 	{
-		position = position + up;
-		target = position + view;
+		position = position + up * cameraspeedchange;
+		target = position + view * cameraspeedchange;
 	}
-	if(Application::IsKeyPressed('E'))
+	if (Application::IsKeyPressed('E'))
 	{
-		position = position - up;
-		target = position + view;
+		position = position - up * cameraspeedchange;
+		target = position + view * cameraspeedchange;
 	}
-	if(Application::IsKeyPressed('W'))
+	if (Application::IsKeyPressed('W'))
 	{
-		position = position + view;
-		target = target + view;
+		position += horizontalView * cameraspeedchange;
+		target += horizontalView * cameraspeedchange;
 	}
-	if(Application::IsKeyPressed('S'))
+	if (Application::IsKeyPressed('S'))
 	{
-		position = position - view;
-		target = target - view;
+		position -= horizontalView * cameraspeedchange;
+		target -= horizontalView * cameraspeedchange;
 	}
 	if (Application::IsKeyPressed(VK_LEFT))
 	{
@@ -90,7 +93,7 @@ void Camera2::Update(double dt)
 		view = rotation * view;
 		target = position + view;
 	}
-	if(Application::IsKeyPressed('R'))
+	if (Application::IsKeyPressed('R'))
 	{
 		Reset();
 	}
@@ -111,15 +114,12 @@ void Camera2::Reset()
 #include "Camera2.h"
 #include "Application.h"
 #include "Mtx44.h"
-
 Camera2::Camera2()
 {
 }
-
 Camera2::~Camera2()
 {
 }
-
 void Camera2::Init(const Vector3& pos, const Vector3& target, const Vector3& up)
 {
 	this->position = defaultPosition = pos;
@@ -130,7 +130,6 @@ void Camera2::Init(const Vector3& pos, const Vector3& target, const Vector3& up)
 	right.Normalize();
 	this->up = defaultUp = right.Cross(view).Normalized();
 }
-
 void Camera2::Update(double dt)
 {
 	static const float CAMERA_SPEED = 50.f;
@@ -193,7 +192,6 @@ void Camera2::Update(double dt)
 		Reset();
 	}
 }
-
 void Camera2::Reset()
 {
 	position = defaultPosition;
